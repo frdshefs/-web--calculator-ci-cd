@@ -26,9 +26,8 @@ public class CalculatorControllerTests
         // Act
         var result = _controller.Calculate(request);
 
-        // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        var response = Assert.IsType<CalculatorResponse>(okResult.Value);
+        // Assert - проверяем напрямую значение
+        var response = Assert.IsType<CalculatorResponse>(result.Value);
         Assert.True(response.Success);
         Assert.Equal(15, response.Result);
     }
@@ -39,9 +38,8 @@ public class CalculatorControllerTests
         // Act
         var result = _controller.GetAvailableOperations();
 
-        // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        var operations = Assert.IsType<List<string>>(okResult.Value);
+        // Assert - проверяем напрямую значение
+        var operations = Assert.IsType<List<string>>(result.Value);
         Assert.Equal(5, operations.Count);
         Assert.Contains("add", operations);
     }
