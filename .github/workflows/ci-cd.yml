@@ -4,38 +4,20 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-env:
-  DOTNET_VERSION: '8.0.x'
-  PROJECT_PATH: 'src/WebCalculator'
-  TEST_PATH: 'tests/WebCalculator.Tests'
 jobs:
-  setup:
-    name: Подготовка окружения
+  build-and-test:
+    name: Сборка и тестирование
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - run: dotnet restore ${{ env.PROJECT_PATH }}
-      - run: dotnet restore ${{ env.TEST_PATH }}
-  build:
-    name: Сборка проекта
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
-  test:
-    name: Запуск тестов
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - run: dotnet test ${{ env.TEST_PATH }} --verbosity normal
+          dotnet-version: '8.0.x'
+      - name: Restore dependencies
+        run: |
+          dotnet restore src/WebCalculator/WebCalculator.csproj
+          dotnet restore tests/WebCalculator.Tests/WebCalculator.Tests.csproj
+      - name: Build
+        run: dotnet build src/WebCalculator/WebCalculator.csproj --configuration Release --no-restore
+      - name: Test
+        run: dotnet test tests/WebCalculator.Tests/WebCalculator.Tests.csproj --verbosity normal --no-build
