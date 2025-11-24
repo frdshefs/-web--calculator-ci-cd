@@ -15,7 +15,7 @@ jobs:
           dotnet-version: '8.0.x'
       - name: Restore and build
         run: |
-          dotnet restore
-          dotnet build --configuration Release --no-restore
+          dotnet restore WebCalculator.sln
+          dotnet build WebCalculator.sln --configuration Release --no-restore
       - name: Test
-        run: dotnet test --configuration Release --verbosity normal
+        run: dotnet test WebCalculator.sln --configuration Release --verbosity normal
