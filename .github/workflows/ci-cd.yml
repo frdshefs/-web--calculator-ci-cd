@@ -13,11 +13,9 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-      - name: Restore dependencies
+      - name: Restore and build
         run: |
-          dotnet restore src/WebCalculator/WebCalculator.csproj
-          dotnet restore tests/WebCalculator.Tests/WebCalculator.Tests.csproj
-      - name: Build
-        run: dotnet build src/WebCalculator/WebCalculator.csproj --configuration Release --no-restore
+          dotnet restore
+          dotnet build --configuration Release --no-restore
       - name: Test
-        run: dotnet test tests/WebCalculator.Tests/WebCalculator.Tests.csproj --verbosity normal --no-build
+        run: dotnet test --configuration Release --verbosity normal
